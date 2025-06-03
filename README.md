@@ -1,3 +1,48 @@
 # Play Inventory
 
 Play Economy Inventory microservice
+
+
+
+
+# Create and publish Contracts package
+
+### For Windows (PowerShell): 
+
+
+```powershell
+$version="1.0.2"
+$owner="mfdotnetmicroservices"
+$gh_pat="[PAT HERE]"
+
+
+Play.Inventory.Contracts.
+
+dotnet pack src\Play.Inventory.Contracts\ --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=https://github.com/$owner/play.inventory -o ..\packages
+
+
+dotnet nuget push ..\packages\Play.Inventory.Contracts.$version.nupkg --api-key $gh_pat --source "github"
+```
+
+
+
+
+### For macOS
+
+
+```bash
+
+version="1.0.2"
+owner="mfdotnetmicroservices"
+gh_pat="[PAT HERE]"
+
+
+dotnet pack src/Play.Inventory.Contracts/ --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=https://github.com/$owner/play.inventory -o ../packages
+
+dotnet nuget push ../packages/Play.Inventory.Contracts.$version.nupkg --api-key $gh_pat --source "github"
+
+
+
+```
+
+
