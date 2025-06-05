@@ -46,3 +46,69 @@ dotnet nuget push ../packages/Play.Inventory.Contracts.$version.nupkg --api-key 
 ```
 
 
+
+
+## Build the docker image
+
+### windows (powershell)
+```powershell
+
+$env:GH_OWNER="mfdotnetmicroservices"
+$env:GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version .
+```
+
+### macOS (bash)
+```bash
+
+export GH_OWNER="mfdotnetmicroservices"
+export GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version .
+
+```
+
+
+
+## Build the docker image
+
+not done yet VVVV
+
+### windows (powershell)
+```powershell
+-beta
+$env:GH_OWNER="mfdotnetmicroservices"
+$env:GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.catalog:$version .
+```
+
+### macOS (bash)
+```bash
+
+export GH_OWNER="mfdotnetmicroservices"
+export GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version .
+
+```
+
+
+
+
+
+
+## Run the docker image
+
+### windows (powershell)
+```powershell
+$version="1.0.2"
+docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network playinfra_default play.inventory:$version  
+```
+
+
+
+## Run the docker image
+### macOS (bash)
+```bash
+version="1.0.2"
+docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network playinfra_default play.inventory:$version
+
+```
