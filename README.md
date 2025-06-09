@@ -11,7 +11,7 @@ Play Economy Inventory microservice
 
 
 ```powershell
-$version="1.0.2"
+$version="1.0.3"
 $owner="mfdotnetmicroservices"
 $gh_pat="[PAT HERE]"
 
@@ -32,7 +32,7 @@ dotnet nuget push ..\packages\Play.Inventory.Contracts.$version.nupkg --api-key 
 
 ```bash
 
-version="1.0.2"
+version="1.0.3"
 owner="mfdotnetmicroservices"
 gh_pat="[PAT HERE]"
 
@@ -99,7 +99,7 @@ docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version 
 
 ### windows (powershell)
 ```powershell
-$version="1.0.2"
+$version="1.0.3"
 docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network playinfra_default play.inventory:$version  
 ```
 
@@ -108,7 +108,9 @@ docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo
 ## Run the docker image
 ### macOS (bash)
 ```bash
-version="1.0.2"
-docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq --network playinfra_default play.inventory:$version
+version="1.0.3"
+cosmosDbConnString="[CONN STRING HERE]"
+serviceBusConnString="[CONN STRING HERE]"
+docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__ConnectionString=$cosmosDbConnString -e ServiceBusSettings__ConnectionString=$serviceBusConnString -e ServiceSettings__MessageBroker="SERVICEBUS" play.inventory:$version
 
 ```
