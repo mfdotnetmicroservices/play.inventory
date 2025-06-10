@@ -71,22 +71,22 @@ docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version 
 
 ## Build the docker image
 
-not done yet VVVV
 
 ### windows (powershell)
 ```powershell
 -beta
 $env:GH_OWNER="mfdotnetmicroservices"
 $env:GH_PAT="[PAT HERE]"
-docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.catalog:$version .
+$acrname="playeconomyacr"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t "$acrnam.azurecr.io/play.inventory:$version" .
 ```
 
 ### macOS (bash)
 ```bash
-
+acrname="playeconomyacr"
 export GH_OWNER="mfdotnetmicroservices"
 export GH_PAT="[PAT HERE]"
-docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.inventory:$version .
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t "$acrname.azurecr.io/play.inventory:$version" .
 
 ```
 
@@ -113,4 +113,25 @@ cosmosDbConnString="[CONN STRING HERE]"
 serviceBusConnString="[CONN STRING HERE]"
 docker run -it --rm -p 5004:5004 --name inventory -e MongoDbSettings__ConnectionString=$cosmosDbConnString -e ServiceBusSettings__ConnectionString=$serviceBusConnString -e ServiceSettings__MessageBroker="SERVICEBUS" play.inventory:$version
 
+```
+
+
+
+
+
+
+## Publishing the Docker image
+### For PC
+```powershell
+
+$acrname="playeconomyacr"
+az acr login --name $acrname
+docker push "$acrname.azurecr.io/play.inventory:$version"
+```
+
+### For MacOS
+
+```bash
+az acr login --name "$acrname"
+docker push "$acrname.azurecr.io/play.inventory:$version"
 ```
