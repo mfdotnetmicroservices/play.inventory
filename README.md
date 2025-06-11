@@ -135,3 +135,64 @@ docker push "$acrname.azurecr.io/play.inventory:$version"
 az acr login --name "$acrname"
 docker push "$acrname.azurecr.io/play.inventory:$version"
 ```
+
+
+## Creating the Azure Managed Identity and granting it access to Key Vault secrets
+
+ ### Mac
+```bash
+appnameRg="playeconomy"
+namespace="inventory"
+appnamekv="playeconomy-key-vault"
+
+az identity create --resource-group "$appnameRg" --name "$namespace"
+IDENTITY_CLIENT_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query clientId -o tsv)
+IDENTITY_PRINCIPAL_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query principalId -o tsv)
+az keyvault set-policy -n "$appnamekv" --secret-permissions get list --spn "$IDENTITY_CLIENT_ID"
+```
+
+
+
+## Create the kubernetes namespace
+## For windows
+```powershell
+
+$namespace="inventory"
+kubectl create namespace $namespace
+```
+
+## For Mac
+```bash
+
+namespace="inventory"
+kubectl create namespace "$namespace"
+```
+
+## Create the Kubernetes pod
+### For windows
+```powershell
+$namespace="inventory"
+kubectl apply -f .\kubernetes\inventory.yaml -n $namespace 
+```
+
+### For mac
+```bash
+namespace="inventory"
+kubectl apply -f ./kubernetes/inventory.yaml -n "$namespace"
+```
+
+
+## Establish the federated identity credential
+## For Mac
+
+```bash
+
+namespace="inventory"
+appnamecluster="playeconomy_cluster"
+appnameRg="playeconomy"
+
+export AKS_OIDC_ISSUER="$(az aks show --name "${appnamecluster}" --resource-group "${appnameRg}" --query "oidcIssuerProfile.issuerUrl" --output tsv)"
+
+az identity federated-credential create --name ${namespace} --identity-name "${namespace}" --resource-group "${appnameRg}" --issuer "${AKS_OIDC_ISSUER}" --subject system:serviceaccount:"${namespace}":"${namespace}-serviceaccount" --audience api://AzureADTokenExchange 
+
+```

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: inventory-serviceaccount
+  annotations:
+    azure.workload.identity/client-id: cff15de3-75ac-40e0-bbe0-24fd83f67199
+  labels:
+    azure.workload.identity/use: "true"
