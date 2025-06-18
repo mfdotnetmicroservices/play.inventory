@@ -1,0 +1,4 @@
+apiVersion: v2
+name: inventory
+description: Installs a inventory microservice
+version: 0.1.0

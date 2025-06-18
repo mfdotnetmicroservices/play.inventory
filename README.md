@@ -168,19 +168,6 @@ namespace="inventory"
 kubectl create namespace "$namespace"
 ```
 
-## Create the Kubernetes pod
-### For windows
-```powershell
-$namespace="inventory"
-kubectl apply -f .\kubernetes\inventory.yaml -n $namespace 
-```
-
-### For mac
-```bash
-namespace="inventory"
-kubectl apply -f ./kubernetes/inventory.yaml -n "$namespace"
-```
-
 
 ## Establish the federated identity credential
 ## For Mac
@@ -194,5 +181,14 @@ appnameRg="playeconomy"
 export AKS_OIDC_ISSUER="$(az aks show --name "${appnamecluster}" --resource-group "${appnameRg}" --query "oidcIssuerProfile.issuerUrl" --output tsv)"
 
 az identity federated-credential create --name ${namespace} --identity-name "${namespace}" --resource-group "${appnameRg}" --issuer "${AKS_OIDC_ISSUER}" --subject system:serviceaccount:"${namespace}":"${namespace}-serviceaccount" --audience api://AzureADTokenExchange 
+
+```
+
+## Install the helm chart
+```bash
+
+namespace="inventory"
+
+helm install inventory-service ./helm -f ./helm/values.yaml -n "$namespace"
 
 ```
