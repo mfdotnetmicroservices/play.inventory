@@ -66,14 +66,26 @@ jobs:
     needs: generate-version
 
     env:
-      APP_NAME: playeconomyacr
+      ACR_NAME: playeconomyacr
+      APP_NAME: playeconomy
 
     permissions:
+      id-token: write
       contents: read
       packages: write
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: Azure/login@v2.3.0
+      with:
+        # ClientId of the Azure Service principal created.
+        client-id: ${{secrets.AZURE_CLIENT_ID}}
+        # TenantId of the Azure Service principal created.
+        tenant-id: ${{secrets.AZURE_TENANT_ID}}
+        # Azure subscriptionId
+        subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
     
     - name: Build and push Docker image
       uses: docker/build-push-action@v6.18.0
@@ -81,7 +93,7 @@ jobs:
         secrets: |
           "GH_OWNER=${{github.repository_owner}}"
           "GH_PAT=${{secrets.GH_PAT}}"
-        tags: ${{env.APP_NAME}}.azurecr.io/play.inventory:${{ needs.generate-version.outputs.new_version }}
+        tags: ${{env.ACR_NAME}}.azurecr.io/play.inventory:${{ needs.generate-version.outputs.new_version }}
 
 
           
