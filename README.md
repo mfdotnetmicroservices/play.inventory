@@ -195,3 +195,6 @@ helm install inventory-service ./helm -f ./helm/values.yaml -n "$namespace"
 
 ## Required repository secrets for GitHub workflow 
 GH_PAT: Created in GitHub user profile --> Settings --> Developer settings --> Personal access token
+AZURE_CLIENT_ID: From AAD(Microsoft Entra ID) App Registration 
+AZURE_SUBSCRIPTION_ID: From Azure Portal subscription 
+AZURE_TENANT_ID: From AAD(Microsoft Entra ID) properties page
